@@ -1,0 +1,157 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NexusPay Payment Gateway API",
+    "version": "1.0.0",
+    "description": "Production-grade, highly resilient payment gateway and merchant settlement API."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/api/v1",
+      "description": "Local Development Server"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "summary": "Register a new Merchant",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["businessName", "email", "password"],
+                "properties": {
+                  "businessName": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "minLength": 8 },
+                  "currency": { "type": "string", "default": "INR" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Merchant and User account created" },
+          "409": { "description": "Email already registered" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Merchant Login",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Returns access and refresh tokens" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/payments/intents": {
+      "post": {
+        "summary": "Create Payment Intent & Attempt",
+        "tags": ["Payments"],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Unique request key for safe deduplication"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["amount"],
+                "properties": {
+                  "amount": { "type": "integer", "description": "Amount in minor currency units (paise)" },
+                  "currency": { "type": "string", "default": "INR" },
+                  "description": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "PaymentIntent and Razorpay order created" },
+          "409": { "description": "Concurrent idempotency collision" }
+        }
+      }
+    },
+    "/payments/verify": {
+      "post": {
+        "summary": "Authoritatively Verify & Settle Payment",
+        "tags": ["Payments"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["razorpayOrderId", "razorpayPaymentId", "razorpaySignature"],
+                "properties": {
+                  "razorpayOrderId": { "type": "string" },
+                  "razorpayPaymentId": { "type": "string" },
+                  "razorpaySignature": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Signature verified, provider status confirmed, journal and outbox recorded" },
+          "400": { "description": "Invalid cryptographic signature or tampered amount" }
+        }
+      }
+    },
+    "/payments/{id}/refunds": {
+      "post": {
+        "summary": "Concurrency-Safe Refund",
+        "tags": ["Payments"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["amount"],
+                "properties": {
+                  "amount": { "type": "integer", "description": "Amount to refund in minor units" },
+                  "reason": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Refund executed and journaled" },
+          "400": { "description": "Refund exceeds captured balance" }
+        }
+      }
+    }
+  }
+}
