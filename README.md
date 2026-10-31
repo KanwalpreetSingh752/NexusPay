@@ -1,4 +1,4 @@
-# NexusPay — Production-Grade Payment Gateway & Financial Settlement Engine
+# NexusPay — Payment Gateway & Financial Settlement Engine
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg?logo=node.js)](https://nodejs.org/)

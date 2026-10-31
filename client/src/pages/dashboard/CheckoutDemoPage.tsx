@@ -56,7 +56,10 @@ export const CheckoutDemoPage: React.FC = () => {
       const { intentId, providerOrderId, razorpayKeyId } = res.data.data;
       setStatusMessage(`Step 2: PaymentIntent (${intentId.slice(0, 8)}) created. Launching Razorpay Modal...`);
 
-      // 2. Open Razorpay Checkout Modal
+      // 2. Open Razorpay Checkout Modal only if real Razorpay test credentials are provided
+      // Dummy demo key 'rzp_test_NexusDemoKey01' will fail against live Razorpay servers
+      const isDummyDemoKey = !razorpayKeyId || razorpayKeyId === 'rzp_test_NexusDemoKey01';
+
       const options = {
         key: razorpayKeyId || 'rzp_test_NexusDemoKey01',
         amount: amountInPaise,
@@ -86,25 +89,39 @@ export const CheckoutDemoPage: React.FC = () => {
         },
       };
 
-      if (window.Razorpay) {
-        const rzp = new window.Razorpay(options);
-        rzp.open();
-      } else {
-        // Fallback: trigger simulated verification directly
-        setStatusMessage('Razorpay script offline. Triggering instant simulated verification...');
-        setTimeout(() => {
-          verifyPayment({
-            razorpay_order_id: providerOrderId,
-            razorpay_payment_id: `pay_sim_${Date.now()}`,
-            razorpay_signature: 'simulated_valid_signature',
+      if (window.Razorpay && !isDummyDemoKey) {
+        try {
+          const rzp = new window.Razorpay(options);
+          rzp.on('payment.failed', function (resp: any) {
+            setStep('error');
+            setStatusMessage(`Payment failed at provider: ${resp.error?.description || 'Declined'}`);
+            setLoading(false);
           });
-        }, 1200);
+          rzp.open();
+        } catch (modalErr: any) {
+          console.warn('Razorpay checkout modal failed, switching to instant simulation:', modalErr);
+          triggerSimulatedFlow(providerOrderId);
+        }
+      } else {
+        // Simulation mode (dummy Razorpay credentials)
+        triggerSimulatedFlow(providerOrderId);
       }
     } catch (err: any) {
       setStep('error');
       setStatusMessage(err.response?.data?.error?.message || 'Failed to initiate checkout.');
       setLoading(false);
     }
+  };
+
+  const triggerSimulatedFlow = (orderId: string) => {
+    setStatusMessage('Simulation Mode: Simulating checkout flow & HMAC verification...');
+    setTimeout(() => {
+      verifyPayment({
+        razorpay_order_id: orderId,
+        razorpay_payment_id: `pay_sim_${Date.now()}`,
+        razorpay_signature: 'simulated_valid_signature',
+      });
+    }, 900);
   };
 
   const verifyPayment = async (razorpayResponse: {
