@@ -10,7 +10,7 @@ const configSchema = z.object({
   port: z.coerce.number().default(4000),
   nodeEnv: z.enum(['development', 'production', 'test']).default('development'),
   apiPrefix: z.string().default('/api/v1'),
-  frontendUrl: z.string().default('http://localhost:5173'),
+  frontendUrl: z.string().default('http://localhost:9000'),
 
   databaseUrl: z.string().min(1, 'DATABASE_URL is required'),
 

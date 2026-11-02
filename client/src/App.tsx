@@ -10,6 +10,7 @@ import { CheckoutDemoPage } from './pages/dashboard/CheckoutDemoPage';
 import { ApiKeysPage } from './pages/dashboard/ApiKeysPage';
 import { WebhooksPage } from './pages/dashboard/WebhooksPage';
 import { SettingsPage } from './pages/dashboard/SettingsPage';
+import { LandingPage } from './pages/LandingPage';
 import { Loader2 } from 'lucide-react';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -38,10 +39,11 @@ export const App: React.FC = () => {
           {/* Public Authentication Routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<LandingPage />} />
 
           {/* Protected Merchant Dashboard Routes */}
           <Route
-            path="/"
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <DashboardLayout />

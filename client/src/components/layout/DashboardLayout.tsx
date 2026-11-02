@@ -23,16 +23,16 @@ export const DashboardLayout: React.FC = () => {
   };
 
   const navItems = [
-    { label: 'Overview', to: '/', icon: LayoutDashboard },
-    { label: 'Payments', to: '/payments', icon: CreditCard },
-    { label: 'Checkout Demo', to: '/checkout-demo', icon: PlaySquare, highlight: true },
-    { label: 'API Keys', to: '/api-keys', icon: KeyRound },
-    { label: 'Webhooks', to: '/webhooks', icon: Webhook },
-    { label: 'Settings', to: '/settings', icon: Settings },
+    { label: 'Overview', to: '/dashboard', icon: LayoutDashboard },
+    { label: 'Payments', to: '/dashboard/payments', icon: CreditCard },
+    { label: 'Checkout Demo', to: '/dashboard/checkout-demo', icon: PlaySquare, highlight: true },
+    { label: 'API Keys', to: '/dashboard/api-keys', icon: KeyRound },
+    { label: 'Webhooks', to: '/dashboard/webhooks', icon: Webhook },
+    { label: 'Settings', to: '/dashboard/settings', icon: Settings },
   ];
 
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-100 overflow-hidden">
+    <div className="dashboard-shell flex h-screen bg-slate-950 text-slate-100 overflow-hidden">
       {/* Sidebar */}
       <aside className="w-64 border-r border-slate-800 bg-slate-900/50 flex flex-col justify-between shrink-0">
         <div>
@@ -70,7 +70,7 @@ export const DashboardLayout: React.FC = () => {
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  end={item.to === '/'}
+                  end={item.to === '/dashboard'}
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                       isActive

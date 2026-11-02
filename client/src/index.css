@@ -6,6 +6,392 @@
   body {
     @apply bg-slate-900 text-slate-100 selection:bg-sky-500 selection:text-white;
   }
+
+  .landing-page {
+    --cursor-x: 50vw;
+    --cursor-y: 20vh;
+    --cursor-opacity: 0;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    position: relative;
+  }
+
+  .landing-page section > div > div,
+  .landing-page article,
+  .landing-page pre {
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .landing-page article,
+  .landing-page .landing-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.025) 45%, rgba(0, 0, 0, 0.2));
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 rgba(255, 255, 255, 0.025), 0 24px 70px rgba(0, 0, 0, 0.28);
+  }
+
+  .landing-page article::before,
+  .landing-page .landing-card::before {
+    position: absolute;
+    z-index: -1;
+    top: -45%;
+    right: -15%;
+    width: 65%;
+    height: 90%;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    content: '';
+    filter: blur(42px);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .landing-page article:hover,
+  .landing-page .landing-card:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.035) 45%, rgba(0, 0, 0, 0.2));
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .landing-page::before {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    content: '';
+    background: radial-gradient(
+      520px circle at var(--cursor-x) var(--cursor-y),
+      rgba(255, 255, 255, 0.09),
+      rgba(255, 255, 255, 0.025) 28%,
+      transparent 68%
+    );
+    opacity: var(--cursor-opacity);
+    mix-blend-mode: screen;
+    transition: opacity 220ms ease-out;
+  }
+
+  .landing-grid {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-position: center;
+    background-size: 64px 64px;
+    animation: landing-grid-drift 24s linear infinite;
+    position: relative;
+    z-index: 0;
+  }
+
+  .landing-page > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-orbit {
+    box-shadow: inset 0 0 100px rgba(255, 255, 255, 0.025), 0 0 120px rgba(255, 255, 255, 0.04);
+    animation: orbit-drift 14s ease-in-out infinite;
+  }
+
+  .hero-orbit::after {
+    position: absolute;
+    top: 16%;
+    left: 18%;
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 24px 8px rgba(255, 255, 255, 0.24);
+    content: '';
+    animation: orbit-pulse 4s ease-in-out infinite;
+  }
+
+  .hero-core {
+    animation: core-float 5s ease-in-out infinite;
+  }
+
+  .landing-reveal {
+    animation: landing-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .landing-card {
+    transition: transform 350ms ease, border-color 350ms ease, background-color 350ms ease;
+  }
+
+  .landing-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .landing-delay-1 {
+    animation-delay: 80ms;
+  }
+
+  .landing-delay-2 {
+    animation-delay: 180ms;
+  }
+
+  .landing-delay-3 {
+    animation-delay: 280ms;
+  }
+
+  .landing-delay-4 {
+    animation-delay: 380ms;
+  }
+
+  @keyframes landing-grid-drift {
+    from {
+      background-position: center 0;
+    }
+    to {
+      background-position: center 64px;
+    }
+  }
+
+  @keyframes orbit-drift {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(-18px, 12px, 0) rotate(5deg);
+    }
+  }
+
+  @keyframes orbit-pulse {
+    0%, 100% {
+      transform: scale(0.8);
+      opacity: 0.45;
+    }
+    50% {
+      transform: scale(1.6);
+      opacity: 1;
+    }
+  }
+
+  @keyframes core-float {
+    0%, 100% {
+      transform: translate(-50%, -50%) rotate(-2deg);
+    }
+    50% {
+      transform: translate(-50%, calc(-50% - 10px)) rotate(2deg);
+    }
+  }
+
+  @keyframes landing-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .landing-grid,
+    .hero-orbit,
+    .hero-core,
+    .hero-orbit::after,
+    .landing-reveal,
+    .landing-page::before {
+      animation: none;
+      transition: none;
+    }
+
+    .landing-card {
+      transition: none;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .landing-page::before {
+      display: none;
+    }
+  }
+
+  /* Keep authenticated surfaces in the same restrained monochrome system as the landing page. */
+  .dashboard-shell,
+  .auth-page {
+    background-color: #080909;
+    color: rgba(255, 255, 255, 0.86);
+  }
+
+  .auth-page.min-h-screen {
+    background-color: #080909 !important;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  .auth-page [class*='bg-slate-'] {
+    background-color: #0d0e0e !important;
+  }
+
+  .auth-page > div > div[class*='rounded-xl'] {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03) 48%, rgba(0, 0, 0, 0.2)) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 24px 70px rgba(0, 0, 0, 0.38);
+  }
+
+  .auth-page [class*='border-slate-'] {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .auth-page [class*='text-sky-'] {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .auth-page [class*='hover\\:text-sky-']:hover {
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .auth-page button[class*='bg-sky-'] {
+    background-color: rgba(255, 255, 255, 0.92);
+    color: #080909;
+  }
+
+  .auth-page button[class*='bg-sky-']:hover {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+
+  .dashboard-shell > .flex-1,
+  .dashboard-shell > .flex-1 > header,
+  .dashboard-shell > .flex-1 > main {
+    background-color: #080909;
+  }
+
+  .dashboard-shell > aside {
+    background-color: rgba(13, 14, 14, 0.78);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .dashboard-shell > .flex-1 > header {
+    background-color: rgba(8, 9, 9, 0.72);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .dashboard-shell main [class*='rounded-xl'][class*='border'],
+  .dashboard-shell main [class*='rounded-lg'][class*='border'] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.025) 48%, rgba(0, 0, 0, 0.18));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 18px 50px rgba(0, 0, 0, 0.24);
+  }
+
+  .dashboard-shell main [class*='rounded-xl'][class*='border']:hover,
+  .dashboard-shell main [class*='rounded-lg'][class*='border']:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .dashboard-shell .bg-slate-900,
+  .dashboard-shell .bg-slate-900\/50,
+  .dashboard-shell .bg-slate-900\/60,
+  .dashboard-shell .bg-slate-900\/40,
+  .dashboard-shell .bg-slate-900\/30,
+  .auth-page .bg-slate-900\/60 {
+    background-color: #0d0e0e;
+  }
+
+  .dashboard-shell .bg-slate-950,
+  .auth-page .bg-slate-950 {
+    background-color: #080909;
+  }
+
+  .dashboard-shell .bg-slate-800,
+  .dashboard-shell .bg-slate-800\/60,
+  .dashboard-shell .bg-slate-800\/40,
+  .dashboard-shell .bg-slate-800\/30,
+  .dashboard-shell .bg-slate-800\/50 {
+    background-color: rgba(255, 255, 255, 0.045);
+  }
+
+  .dashboard-shell .border-slate-800,
+  .dashboard-shell .border-slate-800\/80,
+  .dashboard-shell .border-slate-700\/50,
+  .auth-page .border-slate-800,
+  .auth-page .border-slate-800\/80 {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dashboard-shell .text-slate-100,
+  .dashboard-shell .text-slate-200,
+  .dashboard-shell .text-white,
+  .auth-page .text-slate-100,
+  .auth-page .text-white {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .dashboard-shell .text-slate-300,
+  .dashboard-shell .text-slate-400,
+  .auth-page .text-slate-400 {
+    color: rgba(255, 255, 255, 0.52);
+  }
+
+  .dashboard-shell .text-slate-500,
+  .dashboard-shell .text-slate-600,
+  .auth-page .text-slate-500,
+  .auth-page .text-slate-600 {
+    color: rgba(255, 255, 255, 0.32);
+  }
+
+  .dashboard-shell .text-sky-400,
+  .dashboard-shell .text-sky-300,
+  .auth-page .text-sky-400,
+  .auth-page .text-sky-300 {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .dashboard-shell .bg-sky-600,
+  .dashboard-shell .bg-sky-500,
+  .auth-page .bg-sky-600,
+  .auth-page .bg-sky-500 {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #080909;
+  }
+
+  .dashboard-shell .bg-gradient-to-tr,
+  .auth-page .bg-gradient-to-tr {
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.55));
+    color: #080909;
+  }
+
+  .dashboard-shell .shadow-sky-500\/20,
+  .dashboard-shell .shadow-sky-600\/20,
+  .auth-page .shadow-sky-500\/20,
+  .auth-page .shadow-sky-600\/20 {
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  }
+
+  .dashboard-shell .hover\:bg-sky-500:hover,
+  .auth-page .hover\:bg-sky-500:hover {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+
+  .dashboard-shell input,
+  .dashboard-shell select,
+  .auth-page input,
+  .auth-page select {
+    background-color: #080909;
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .dashboard-shell input:focus,
+  .dashboard-shell select:focus,
+  .auth-page input:focus,
+  .auth-page select:focus {
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
+  }
 }
 
 /* Custom scrollbars */

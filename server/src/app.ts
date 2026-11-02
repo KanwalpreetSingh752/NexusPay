@@ -18,7 +18,7 @@ export const app = express();
 // Enable CORS
 app.use(
   cors({
-    origin: [config.frontendUrl, 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+    origin: [config.frontendUrl, 'http://localhost:9000', 'http://localhost:5174', 'http://localhost:3000'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Idempotency-Key', 'X-NexusPay-Signature'],

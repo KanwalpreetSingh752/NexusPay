@@ -29,7 +29,7 @@ export const RegisterPage: React.FC = () => {
       });
       const { tokens, user, merchant } = res.data.data;
       login(tokens, user, merchant);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.error?.message || 'Registration failed.');
     } finally {
@@ -38,7 +38,7 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center px-4">
+    <div className="auth-page min-h-screen bg-slate-950 flex flex-col justify-center items-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex h-12 w-12 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 items-center justify-center text-white mb-4 shadow-xl shadow-sky-500/20">

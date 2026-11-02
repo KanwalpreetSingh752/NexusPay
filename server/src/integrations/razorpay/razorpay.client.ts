@@ -8,7 +8,8 @@ export class RazorpayClientWrapper {
   private isSimulation: boolean;
 
   constructor() {
-    this.isSimulation = config.razorpay.simulationMode;
+    // Tests must remain deterministic even when a developer's local .env disables simulation.
+    this.isSimulation = config.razorpay.simulationMode || config.nodeEnv === 'test';
     try {
       this.client = new Razorpay({
         key_id: config.razorpay.keyId,

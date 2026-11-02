@@ -22,7 +22,7 @@ export const LoginPage: React.FC = () => {
       const res = await api.post('/auth/login', { email, password });
       const { tokens, user, merchant } = res.data.data;
       login(tokens, user, merchant);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.error?.message || 'Login failed. Please verify credentials.');
     } finally {
@@ -31,7 +31,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center px-4">
+    <div className="auth-page min-h-screen bg-slate-950 flex flex-col justify-center items-center px-4">
       <div className="w-full max-w-md">
         {/* Brand Header */}
         <div className="text-center mb-8">

@@ -399,7 +399,8 @@ cd ..
 ```
 
 *Pre-seeded Demo Credentials:*
-- **Portal URL:** `http://localhost:5173`
+- **Landing page:** `http://localhost:9000`
+- **Merchant portal:** `http://localhost:9000/dashboard`
 - **Email:** `demo@nexuspay.dev`
 - **Password:** `Password@123`
 - **Test Key:** `npay_test_nexusdemo1234567890abcdef`
@@ -418,7 +419,7 @@ npm run dev
 # Terminal 2: React Dashboard
 cd D:\projects\NexusPay\client
 npm run dev
-# Running on http://localhost:5173
+# Running on http://localhost:9000
 ```
 
 ---
@@ -463,8 +464,8 @@ Time:        11.132 s
 
 To demonstrate the gateway in an interview setting:
 
-1. **Open the Dashboard:** Go to `http://localhost:5173` and log in with `demo@nexuspay.dev`.
-2. **Open the Checkout Demo:** Navigate to `/checkout-demo`.
+1. **Open the Dashboard:** Go to `http://localhost:9000/dashboard` and log in with `demo@nexuspay.dev`.
+2. **Open the Checkout Demo:** Navigate to `/dashboard/checkout-demo`.
 3. **Trigger a Payment:** Click **Pay ₹499.00 (Test Mode)**.
    - *Inspect Network Tab:* Observe the `Idempotency-Key` header sent with the request.
    - *Observe Monitor:* Watch the 4-step state progression:

@@ -239,7 +239,7 @@ export const OverviewPage: React.FC = () => {
             <p className="text-xs text-slate-400 mt-0.5">Latest entries recorded in PostgreSQL</p>
           </div>
           <Link
-            to="/payments"
+            to="/dashboard/payments"
             className="text-xs font-semibold text-sky-400 hover:text-sky-300 flex items-center gap-1"
           >
             <span>View All</span>
@@ -276,7 +276,7 @@ export const OverviewPage: React.FC = () => {
               ) : (
                 <tr>
                   <td colSpan={5} className="py-8 text-center text-slate-500 text-xs">
-                    No transactions yet. Run the <Link to="/checkout-demo" className="text-sky-400 hover:underline">Checkout Demo</Link> to create your first payment!
+                    No transactions yet. Run the <Link to="/dashboard/checkout-demo" className="text-sky-400 hover:underline">Checkout Demo</Link> to create your first payment!
                   </td>
                 </tr>
               )}
